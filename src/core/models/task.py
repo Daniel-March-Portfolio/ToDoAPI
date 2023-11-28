@@ -16,7 +16,7 @@ class Task(BaseModel):
 
     uuid: Mapped[UUID] = mapped_column(primary_key=True, default=uuid4)
     title: Mapped[str]
-    created_at: Mapped[datetime] = mapped_column(default=func.now)
+    created_at: Mapped[datetime] = mapped_column(default=func.now())
 
     user: Mapped["User"] = relationship(back_populates="tasks")
     user_uuid: Mapped[UUID] = mapped_column(ForeignKey("user.uuid"))

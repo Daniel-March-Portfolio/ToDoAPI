@@ -19,6 +19,6 @@ class User(BaseModel):
     name: Mapped[str]
     login: Mapped[str] = mapped_column(unique=True)
     password_hash: Mapped[str]
-    created_at: Mapped[datetime] = mapped_column(default=func.now)
+    created_at: Mapped[datetime] = mapped_column(default=func.now())
 
     tasks: Mapped[List["Task"]] = relationship(back_populates="user", cascade="all, delete-orphan")
