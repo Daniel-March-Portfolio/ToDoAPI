@@ -8,6 +8,7 @@ class UserDataClass:
     uuid: UUID
     name: str
     login: str
+    password: str
     password_hash: str
     created_at: datetime
 
