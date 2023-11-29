@@ -94,8 +94,7 @@ async def test_for_wrong_password(
 async def test_for_empty_login_and_password(api: APIInterface, engine: AsyncEngine):
     method = Post(
         request=Request(
-            api=api,
-            raw_json={}
+            api=api
         ),
     )
 
