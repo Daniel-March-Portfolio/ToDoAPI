@@ -78,7 +78,7 @@ class Post(MethodInterface):
             self.__error = {"status": 403, "errors": ["bad login or password"]}
             return False
 
-        session = ".".join([self.__data.login, uuid.uuid4().hex])
+        session = ".".join([user.uuid.hex, uuid.uuid4().hex])
         await self.__request.api.redis.set(session, "", ex=self.__request.api.env.api_session_ttl)
         self.__result = Result(session=session)
         return True
