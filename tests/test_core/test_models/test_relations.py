@@ -2,7 +2,7 @@ import pytest
 from sqlalchemy.ext.asyncio import AsyncEngine
 
 from src.core.models import Task, User
-from tests.test_core.data_classes import TaskDataClass, UserDataClass
+from tests.data_classes import TaskDataClass, UserDataClass
 
 
 @pytest.mark.asyncio
