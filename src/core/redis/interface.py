@@ -13,3 +13,6 @@ class RedisInterface(ABC):
 
     @abstractmethod
     def keys(self, pattern: PatternT = "*", *kwargs) -> ResponseT: ...
+
+    @abstractmethod
+    def delete(self, *names: KeyT) -> ResponseT: ...
