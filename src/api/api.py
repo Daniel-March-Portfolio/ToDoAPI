@@ -1,11 +1,13 @@
 import asyncio
 
 from aiohttp.web import Application, TCPSite, AppRunner
+from sqlalchemy.ext.asyncio import AsyncEngine
 
 from src.api.interface import APIInterface
 from src.api.router import Router
 from src.api.router.interface import RouterInterface
 from src.api.state import State
+from src.core.redis import RedisInterface
 from src.env import EnvInterface
 
 
@@ -14,18 +16,41 @@ class API(Application, APIInterface):
     __tcp_site: None | TCPSite
     __state: State
     __router: RouterInterface
+    __database_engine: AsyncEngine
+    __redis: RedisInterface
 
-    def __init__(self, env: EnvInterface, router: RouterInterface):
+    def __init__(
+            self, env: EnvInterface, database_engine: AsyncEngine, redis: RedisInterface,
+            router: RouterInterface | None = None
+    ):
         super().__init__()
         router = router or Router()
         self.__env = env
+        self.__database_engine = database_engine
+        self.__redis = redis
         self.__tcp_site = None
-        self.add_routes(router.routes)
+        self.__router = router
         self.__state = State.INITIALIZED
 
     @property
     def state(self) -> State:
         return self.__state
+
+    @property
+    def redis(self) -> RedisInterface:
+        return self.__redis
+
+    @property
+    def env(self) -> EnvInterface:
+        return self.__env
+
+    @property
+    def database_engine(self) -> AsyncEngine:
+        return self.__database_engine
+
+    @property
+    def router(self) -> RouterInterface:
+        return self.__router
 
     async def run(self) -> None:
         runner = AppRunner(self)
