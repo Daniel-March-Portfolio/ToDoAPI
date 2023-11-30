@@ -21,7 +21,6 @@ async def get_user_by_session(database_engine: AsyncEngine, session: str | None,
         create_condition(User.uuid, user_uuid_by_session_in_redis),
         engine=database_engine,
         fetch_one=True
-
     )
     if user is None:
         raise APIException(status=403, errors=["bad session"])
