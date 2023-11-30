@@ -45,9 +45,17 @@ async def test_method(api: APIInterface, engine: AsyncEngine, normal_users: list
     assert method.response.status == 201
 
 
+@pytest.mark.parametrize(
+    "name,login,password",
+    [
+        ["", "", ""],
+        [None, None, None]
+    ]
+)
 @pytest.mark.asyncio
 async def test_with_short_name_login_and_password(
-        api: APIInterface, engine: AsyncEngine, normal_users: list[UserDataClass]
+        api: APIInterface, engine: AsyncEngine, normal_users: list[UserDataClass],
+        name: str | None, login: str | None, password: str | None
 ):
     n_users = await User.get_count_of_rows(engine)
     assert n_users == 0
@@ -55,9 +63,9 @@ async def test_with_short_name_login_and_password(
         request=Request(
             api=api,
             raw_json={
-                "name": "",
-                "login": "",
-                "password": ""
+                "name": name,
+                "login": login,
+                "password": password
             }
         ),
     )
