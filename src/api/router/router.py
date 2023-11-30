@@ -6,7 +6,6 @@ from src.api.router.logout.setup import setup as setup_logout_routes
 from src.api.router.register.setup import setup as setup_register_routes
 from src.api.router.task.setup import setup as setup_task_routes
 from src.api.router.tasks.setup import setup as setup_tasks_routes
-from src.api.router.user.setup import setup as setup_user_routes
 
 
 class Router(RouterInterface):
@@ -22,7 +21,6 @@ class Router(RouterInterface):
         setup_register_routes(self)
         setup_task_routes(self)
         setup_tasks_routes(self)
-        setup_user_routes(self)
 
     def add_route(self, route: RouteDef) -> None:
         self.__routes.append(route)

@@ -2,7 +2,7 @@ from aiohttp.web_routedef import view
 
 from src.api.router import Router
 
-AMOUNT_OF_USED_URLS = 6
+AMOUNT_OF_USED_URLS = 5
 
 
 def test_paths_for_routes():
