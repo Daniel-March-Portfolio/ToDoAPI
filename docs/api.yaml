@@ -156,7 +156,7 @@ paths:
 
   /login:
     post:
-      security: []
+      security: [ ]
       summary: Authorize user.
       requestBody:
         required: true
@@ -189,7 +189,7 @@ paths:
 
   /register:
     post:
-      security: []
+      security: [ ]
       summary: Register new user.
       requestBody:
         required: true
@@ -219,10 +219,13 @@ components:
     Error:
       type: object
       properties:
-        summary:
-          type: string
-        description:
-          type: string
+        status:
+          type: integer
+        errors:
+          type: array
+          items:
+            type: string
+
 
     Task:
       type: object
@@ -282,4 +285,4 @@ components:
 
 
 security:
-  - cookieAuthentication: []
+  - cookieAuthentication: [ ]
