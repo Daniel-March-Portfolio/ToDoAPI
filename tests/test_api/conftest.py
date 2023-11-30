@@ -1,16 +1,10 @@
-from fakeredis.aioredis import FakeRedis as _FakeRedis
 from pytest_asyncio import fixture
 from sqlalchemy.ext.asyncio import AsyncEngine
 
+from core.redis import RedisInterface
 from src.api import API
 from src.api import APIInterface
-from src.core.database import create_engine
-from src.core.redis import RedisInterface
 from src.env.interface import EnvInterface
-
-
-class FakeRedis(_FakeRedis, RedisInterface):
-    pass
 
 
 class FakeEnv(EnvInterface):
@@ -44,11 +38,11 @@ class FakeEnv(EnvInterface):
 
 
 @fixture(scope="function")
-def api(engine: AsyncEngine) -> APIInterface:
+def api(engine: AsyncEngine, redis: RedisInterface) -> APIInterface:
     env = FakeEnv()
     api = API(
         env=env,
         database_engine=engine,
-        redis=FakeRedis()
+        redis=redis
     )
     return api

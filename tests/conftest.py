@@ -2,13 +2,19 @@ import asyncio
 import datetime
 from uuid import UUID
 
+from fakeredis.aioredis import FakeRedis as _FakeRedis
 from pytest_asyncio import fixture
 from sqlalchemy.ext.asyncio import AsyncEngine
 
+from core.redis import RedisInterface
 from src.core.database import create_engine
 from src.core.database.engine import drop_all_tables, create_all_tables
 from src.core.utils.hash_password import hash_password
 from tests.data_classes import UserDataClass, TaskDataClass
+
+
+class FakeRedis(_FakeRedis, RedisInterface):
+    pass
 
 
 @fixture(autouse=True, scope="function")
@@ -17,6 +23,12 @@ def engine() -> AsyncEngine:
     asyncio.run(drop_all_tables(engine=engine))
     asyncio.run(create_all_tables(engine=engine))
     return engine
+
+
+@fixture(scope="function")
+def redis() -> RedisInterface:
+    redis = FakeRedis()
+    return redis
 
 
 @fixture(scope="session")
