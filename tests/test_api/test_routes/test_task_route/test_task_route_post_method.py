@@ -63,7 +63,7 @@ async def test_method(
 @pytest.mark.asyncio
 async def test_for_unauthorized_user(
         api: APIInterface, engine: AsyncEngine, normal_users: list[UserDataClass], normal_tasks: list[TaskDataClass]
-):
+):  # ToDo Deside what to do with this test because it is already tested in utils tests
     user = User(
         login=normal_users[0].login,
         name=normal_users[0].name,
@@ -87,7 +87,7 @@ async def test_for_unauthorized_user(
 @pytest.mark.asyncio
 async def test_for_expired_session(
         api: APIInterface, engine: AsyncEngine, normal_users: list[UserDataClass], normal_tasks: list[TaskDataClass]
-):
+):  # ToDo Deside what to do with this test because it is already tested in utils tests
     user = User(
         login=normal_users[0].login,
         name=normal_users[0].name,
@@ -113,7 +113,7 @@ async def test_for_expired_session(
 @pytest.mark.asyncio
 async def test_for_deleted_user(
         api: APIInterface, engine: AsyncEngine, normal_users: list[UserDataClass], normal_tasks: list[TaskDataClass]
-):
+):  # ToDo Deside what to do with this test because it is already tested in utils tests
     user = User(
         login=normal_users[0].login,
         name=normal_users[0].name,
