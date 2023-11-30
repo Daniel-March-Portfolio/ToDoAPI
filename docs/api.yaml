@@ -234,6 +234,8 @@ components:
           type: string
         title:
           type: string
+        created_at:
+          type: string
 
     task_post_request:
       type: object
