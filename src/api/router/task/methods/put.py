@@ -39,9 +39,9 @@ class Put(MethodInterface):
             self.__error = {"status": 422, "errors": ["body can not be parsed as json"]}
             return False
 
-        title = data.get("title")
+        title = data.get("new_title")
         if title is None or len(title) < 5:
-            self.__error = {"status": 400, "errors": ["title is too short"]}
+            self.__error = {"status": 400, "errors": ["new_title is too short"]}
             return False
 
         task_uuid_str = data.get("uuid")

@@ -39,7 +39,7 @@ async def test_method(
     method = Put(
         request=Request(
             api=api,
-            raw_json={"uuid": task.uuid.hex, "title": normal_tasks[1].title},
+            raw_json={"uuid": task.uuid.hex, "new_title": normal_tasks[1].title},
             cookies={"session": session}
         ),
     )
@@ -77,7 +77,7 @@ async def test_for_unauthorized_user(
     method = Put(
         request=Request(
             api=api,
-            raw_json={"uuid": normal_tasks[0].uuid.hex, "title": normal_tasks[1].title}
+            raw_json={"uuid": normal_tasks[0].uuid.hex, "new_title": normal_tasks[1].title}
         ),
     )
 
@@ -102,7 +102,7 @@ async def test_for_expired_session(
     method = Put(
         request=Request(
             api=api,
-            raw_json={"uuid": normal_tasks[0].uuid.hex, "title": normal_tasks[1].title},
+            raw_json={"uuid": normal_tasks[0].uuid.hex, "new_title": normal_tasks[1].title},
             cookies={"session": session}
         ),
     )
@@ -130,7 +130,7 @@ async def test_for_deleted_user(
     method = Put(
         request=Request(
             api=api,
-            raw_json={"uuid": normal_tasks[0].uuid.hex, "title": normal_tasks[1].title},
+            raw_json={"uuid": normal_tasks[0].uuid.hex, "new_title": normal_tasks[1].title},
             cookies={"session": session}
         ),
     )
@@ -162,7 +162,7 @@ async def test_for_short_title(
     method = Put(
         request=Request(
             api=api,
-            raw_json={"uuid": task.uuid.hex, "title": ""},
+            raw_json={"uuid": task.uuid.hex, "new_title": ""},
             cookies={"session": session}
         ),
     )
@@ -170,7 +170,7 @@ async def test_for_short_title(
     prepare_request_successful = await method.prepare_request()
     assert prepare_request_successful is False
 
-    assert method.error == {"status": 400, "errors": ["title is too short"]}
+    assert method.error == {"status": 400, "errors": ["new_title is too short"]}
 
 
 @pytest.mark.parametrize(
