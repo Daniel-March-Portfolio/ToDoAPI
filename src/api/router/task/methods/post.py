@@ -3,10 +3,11 @@ from uuid import UUID
 
 from aiohttp.web_response import Response, json_response
 
+from core.exceptions import APIException
+from core.utils.get_user_by_session import get_user_by_session
 from src.api.router.utils.base_view import Request
 from src.api.router.utils.method_interface import MethodInterface
-from src.core.models import User, Task
-from src.core.utils.create_condition import create_condition
+from src.core.models import Task
 
 
 @dataclass
@@ -47,25 +48,14 @@ class Post(MethodInterface):
             self.__error = {"status": 400, "errors": ["title is too short"]}
             return False
 
-        session = self.__request.cookies.get("session")
-        if session is None:
-            self.__error = {"status": 403, "errors": "bad session"}
-            return False
-
-        bytes_user_uuid_by_session_in_redis: bytes | None = await self.__request.api.redis.get(session)
-        if bytes_user_uuid_by_session_in_redis is None:
-            self.__error = {"status": 403, "errors": "bad session"}
-            return False
-
-        user_uuid_by_session_in_redis = UUID(bytes_user_uuid_by_session_in_redis.decode())
-        user = await User.filter(
-            create_condition(User.uuid, user_uuid_by_session_in_redis),
-            engine=database_engine,
-            fetch_one=True
-
-        )
-        if user is None:
-            self.__error = {"status": 403, "errors": "bad session"}
+        try:
+            user = await get_user_by_session(
+                redis=self.__request.api.redis,
+                database_engine=database_engine,
+                session=self.__request.cookies.get("session")
+            )
+        except APIException as exception:
+            self.__error = {"status": exception.status, "errors": exception.errors}
             return False
 
         self.__data = Data(
