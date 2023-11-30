@@ -84,7 +84,7 @@ async def test_for_unauthorized_user(
     prepare_request_successful = await method.prepare_request()
     assert prepare_request_successful is False
 
-    assert method.error == {"status": 403, "errors": "bad session"}
+    assert method.error == {"status": 403, "errors": ["bad session"]}
 
 
 @pytest.mark.asyncio
@@ -110,7 +110,7 @@ async def test_for_expired_session(
     prepare_request_successful = await method.prepare_request()
     assert prepare_request_successful is False
 
-    assert method.error == {"status": 403, "errors": "bad session"}
+    assert method.error == {"status": 403, "errors": ["bad session"]}
 
 
 @pytest.mark.asyncio
@@ -138,7 +138,7 @@ async def test_for_deleted_user(
     prepare_request_successful = await method.prepare_request()
     assert prepare_request_successful is False
 
-    assert method.error == {"status": 403, "errors": "bad session"}
+    assert method.error == {"status": 403, "errors": ["bad session"]}
 
 
 @pytest.mark.asyncio
