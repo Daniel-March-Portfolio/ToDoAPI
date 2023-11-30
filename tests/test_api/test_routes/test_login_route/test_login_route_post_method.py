@@ -154,6 +154,6 @@ async def test_cookies(api: APIInterface, engine: AsyncEngine, normal_users: lis
     assert re.match(pattern, cookies) is not None, cookies
 
     session = cookies.split(";")[0][8:]
-    in_redis_session_b: bytes = await api.redis.get(session)
-    in_redis_session = in_redis_session_b.decode()
-    assert in_redis_session == user.uuid.hex
+    bytes_user_uuid_by_session_in_redis: bytes = await api.redis.get(session)
+    user_uuid_by_session_in_redis = bytes_user_uuid_by_session_in_redis.decode()
+    assert user_uuid_by_session_in_redis == user.uuid.hex
