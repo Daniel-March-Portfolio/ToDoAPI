@@ -79,7 +79,7 @@ class Post(MethodInterface):
             return False
 
         session = ".".join([user.uuid.hex, uuid.uuid4().hex])
-        await self.__request.api.redis.set(session, "", ex=self.__request.api.env.api_session_ttl)
+        await self.__request.api.redis.set(session, user.uuid.hex, ex=self.__request.api.env.api_session_ttl)
         self.__result = Result(session=session)
         return True
 

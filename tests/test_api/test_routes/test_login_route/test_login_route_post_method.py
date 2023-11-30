@@ -129,11 +129,13 @@ async def test_for_bad_json_data(api: APIInterface, engine: AsyncEngine, json_da
 
 @pytest.mark.asyncio
 async def test_cookies(api: APIInterface, engine: AsyncEngine, normal_users: list[UserDataClass]):
-    await User(
+    user = User(
         login=normal_users[0].login,
         name=normal_users[0].name,
         password_hash=normal_users[0].password_hash
-    ).save(engine)
+    )
+    await user.save(engine)
+
     method = Post(
         request=Request(
             api=api,
@@ -152,5 +154,6 @@ async def test_cookies(api: APIInterface, engine: AsyncEngine, normal_users: lis
     assert re.match(pattern, cookies) is not None, cookies
 
     session = cookies.split(";")[0][8:]
-    in_redis_session = await api.redis.get(session)
-    assert in_redis_session is not None
+    in_redis_session_b: bytes = await api.redis.get(session)
+    in_redis_session = in_redis_session_b.decode()
+    assert in_redis_session == user.uuid.hex
