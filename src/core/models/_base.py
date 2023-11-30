@@ -21,8 +21,8 @@ class BaseModel(DeclarativeBase):
 
     @classmethod
     async def filter(
-            cls, *conditions: BinaryExpression, limit: int = None, offset: int = None, order_by: tuple[Mapped] = None,
-            engine: AsyncEngine, fetch_one: bool = False
+            cls, *conditions: BinaryExpression, limit: int = None, offset: int = None,
+            order_by: Sequence[Mapped] = None, engine: AsyncEngine, fetch_one: bool = False
     ) -> Sequence[Self] | Self | None:
         order_by = order_by or ()
         stmt = (select(cls)
