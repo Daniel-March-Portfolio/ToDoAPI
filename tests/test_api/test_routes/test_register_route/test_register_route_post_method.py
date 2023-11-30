@@ -1,3 +1,5 @@
+from typing import Any
+
 import pytest
 from aiohttp.web_response import Response
 from sqlalchemy.ext.asyncio import AsyncEngine
@@ -111,3 +113,26 @@ async def test_if_login_already_in_use(api: APIInterface, engine: AsyncEngine, n
 
     n_users = await User.get_count_of_rows(engine)
     assert n_users == 1
+
+
+@pytest.mark.parametrize(
+    "json_data",
+    [
+        [None],
+        ["no_json"],
+        [b"no_json"],
+    ]
+)
+@pytest.mark.asyncio
+async def test_for_bad_json_data(api: APIInterface, engine: AsyncEngine, json_data: Any):
+    method = Post(
+        request=Request(
+            api=api,
+            raw_json=json_data
+        ),
+    )
+
+    prepare_request_successful = await method.prepare_request()
+    assert prepare_request_successful is False
+
+    assert method.error == {"status": 422, "errors": ["body can not be parsed as json"]}, method.error
