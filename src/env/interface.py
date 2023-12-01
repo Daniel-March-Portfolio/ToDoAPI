@@ -22,3 +22,11 @@ class EnvInterface(ABC):
     @property
     @abstractmethod
     def api_salt(self) -> str: ...
+
+    @property
+    @abstractmethod
+    def redis_host(self) -> str: ...
+
+    @property
+    @abstractmethod
+    def redis_port(self) -> int: ...
