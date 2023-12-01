@@ -2,6 +2,7 @@ from pytest_asyncio import fixture
 from sqlalchemy.ext.asyncio import AsyncEngine
 
 from core.redis import RedisInterface
+from enum_classes import EnvVarEnumClass
 from src.api import API
 from src.api import APIInterface
 from src.env.interface import EnvInterface
@@ -10,31 +11,31 @@ from src.env.interface import EnvInterface
 class FakeEnv(EnvInterface):
     @property
     def database_url(self) -> str:
-        return "sqlite+aiosqlite://"
+        return EnvVarEnumClass.DATABASE_URL.value
 
     @property
     def redis_host(self) -> str:
-        return "127.0.0.1"
+        return EnvVarEnumClass.REDIS_HOST.value
 
     @property
     def redis_port(self) -> int:
-        return 8765
+        return EnvVarEnumClass.REDIS_PORT.value
 
     @property
     def api_host(self) -> str:
-        return "127.0.0.1"
+        return EnvVarEnumClass.API_HOST.value
 
     @property
     def api_port(self) -> int:
-        return 8000
+        return EnvVarEnumClass.API_PORT.value
 
     @property
     def api_session_ttl(self) -> int:
-        return 100
+        return EnvVarEnumClass.API_SESSION_TTL.value
 
     @property
     def api_salt(self) -> str:
-        return "some_salt"
+        return EnvVarEnumClass.API_SALT.value
 
 
 @fixture(scope="function")
