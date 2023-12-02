@@ -9,6 +9,7 @@ from src.api import APIInterface
 class RequestDataClass:
     app: APIInterface
     raw_json: dict | Any = field(default_factory=dict)
+    query: dict | Any = field(default_factory=dict)
     cookies: dict = field(default_factory=dict)
 
     async def json(self) -> dict:
