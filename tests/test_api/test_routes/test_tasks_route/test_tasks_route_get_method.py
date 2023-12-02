@@ -4,7 +4,7 @@ import pytest
 from aiohttp.web_response import Response
 from sqlalchemy.ext.asyncio import AsyncEngine
 
-from core.utils.create_condition import create_condition
+from src.core.utils.create_condition import create_condition
 from src.api import APIInterface
 from src.api.router.tasks.methods import Get
 from src.core.models import User, Task

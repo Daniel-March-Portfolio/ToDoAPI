@@ -2,10 +2,10 @@ from uuid import UUID
 
 from sqlalchemy.ext.asyncio import AsyncEngine
 
-from core.exceptions import APIException
-from core.models import User
-from core.redis import RedisInterface
-from core.utils.create_condition import create_condition
+from src.core.exceptions import APIException
+from src.core.models import User
+from src.core.redis import RedisInterface
+from src.core.utils.create_condition import create_condition
 
 
 async def get_user_by_session(database_engine: AsyncEngine, session: str | None, redis: RedisInterface) -> User:

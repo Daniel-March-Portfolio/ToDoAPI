@@ -5,8 +5,8 @@ from aiohttp.web_response import Response
 from sqlalchemy import delete
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from core.exceptions import APIException
-from core.utils.get_user_by_session import get_user_by_session
+from src.core.exceptions import APIException
+from src.core.utils.get_user_by_session import get_user_by_session
 from src.api.router.utils.base_view import Request
 from src.api.router.utils.method_interface import MethodInterface
 from src.core.models import Task

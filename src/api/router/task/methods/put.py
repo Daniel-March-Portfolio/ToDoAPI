@@ -3,9 +3,9 @@ from uuid import UUID
 
 from aiohttp.web_response import Response
 
-from core.exceptions import APIException
-from core.utils.create_condition import create_condition
-from core.utils.get_user_by_session import get_user_by_session
+from src.core.exceptions import APIException
+from src.core.utils.create_condition import create_condition
+from src.core.utils.get_user_by_session import get_user_by_session
 from src.api.router.utils.base_view import Request
 from src.api.router.utils.method_interface import MethodInterface
 from src.core.models import Task

@@ -1,10 +1,10 @@
 import pytest
 from sqlalchemy.ext.asyncio import AsyncEngine
 
-from core.exceptions import APIException
-from core.models import User
-from core.redis import RedisInterface
-from data_classes import UserDataClass
+from src.core.exceptions import APIException
+from src.core.models import User
+from src.core.redis import RedisInterface
+from tests.data_classes import UserDataClass
 from src.core.utils.get_user_by_session import get_user_by_session
 
 

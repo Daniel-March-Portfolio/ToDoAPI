@@ -1,7 +1,7 @@
 import pytest
 from pytest_mock import MockerFixture
 
-from core.exceptions import CoreException
+from src.core.exceptions import CoreException
 from src.env import Env
 from tests.enum_classes import EnvVarEnumClass
 

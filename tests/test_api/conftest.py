@@ -1,8 +1,8 @@
 from pytest_asyncio import fixture
 from sqlalchemy.ext.asyncio import AsyncEngine
 
-from core.redis import RedisInterface
-from enum_classes import EnvVarEnumClass
+from src.core.redis import RedisInterface
+from tests.enum_classes import EnvVarEnumClass
 from src.api import API
 from src.api import APIInterface
 from src.env.interface import EnvInterface

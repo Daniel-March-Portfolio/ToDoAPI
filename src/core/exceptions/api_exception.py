@@ -1,4 +1,4 @@
-from core.exceptions._base_exception import CustomBaseException
+from src.core.exceptions._base_exception import CustomBaseException
 
 
 class APIException(CustomBaseException):

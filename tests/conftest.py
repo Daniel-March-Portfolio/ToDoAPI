@@ -6,7 +6,7 @@ from fakeredis.aioredis import FakeRedis as _FakeRedis
 from pytest_asyncio import fixture
 from sqlalchemy.ext.asyncio import AsyncEngine
 
-from core.redis import RedisInterface
+from src.core.redis import RedisInterface
 from src.core.database import create_engine
 from src.core.database.engine import drop_all_tables, create_all_tables
 from src.core.utils.hash_password import hash_password
