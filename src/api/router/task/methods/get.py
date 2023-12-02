@@ -39,11 +39,8 @@ class Get(MethodInterface):
 
     async def prepare_request(self) -> bool:
         database_engine = self.__request.app.database_engine
-        try:
-            data = await self.__request.json()
-        except:  # ToDo add certain type
-            self.__error = {"status": 422, "errors": ["body can not be parsed as json"]}
-            return False
+
+        data = self.__request.query
 
         uuid_string = data.get("uuid")
         if uuid_string is None:

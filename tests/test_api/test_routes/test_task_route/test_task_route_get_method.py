@@ -1,5 +1,4 @@
 import json
-from typing import Any
 from uuid import uuid4
 
 import pytest
@@ -39,7 +38,7 @@ async def test_method(
     method = Get(
         request=Request(
             app=api,
-            raw_json={"uuid": task.uuid.hex},
+            query={"uuid": task.uuid.hex},
             cookies={"session": session}
         ),
     )
@@ -73,7 +72,7 @@ async def test_for_unauthorized_user(
     method = Get(
         request=Request(
             app=api,
-            raw_json={"uuid": uuid4().hex}
+            query={"uuid": uuid4().hex}
         ),
     )
 
@@ -98,7 +97,7 @@ async def test_for_expired_session(
     method = Get(
         request=Request(
             app=api,
-            raw_json={"uuid": uuid4().hex},
+            query={"uuid": uuid4().hex},
             cookies={"session": session}
         ),
     )
@@ -126,7 +125,7 @@ async def test_for_deleted_user(
     method = Get(
         request=Request(
             app=api,
-            raw_json={"uuid": uuid4().hex},
+            query={"uuid": uuid4().hex},
             cookies={"session": session}
         ),
     )
@@ -143,8 +142,7 @@ async def test_for_empty_body(
 ):
     method = Get(
         request=Request(
-            app=api,
-            raw_json={}
+            app=api
         ),
     )
 
@@ -171,7 +169,7 @@ async def test_if_task_does_not_exists(
     method = Get(
         request=Request(
             app=api,
-            raw_json={"uuid": uuid4().hex},
+            query={"uuid": uuid4().hex},
             cookies={"session": session}
         ),
     )
@@ -210,7 +208,7 @@ async def test_if_try_to_get_another_user_task(
     method = Get(
         request=Request(
             app=api,
-            raw_json={"uuid": task.uuid.hex},
+            query={"uuid": task.uuid.hex},
             cookies={"session": session}
         ),
     )
@@ -222,26 +220,3 @@ async def test_if_try_to_get_another_user_task(
 
     n_tasks = await Task.get_count_of_rows(engine)
     assert n_tasks == 1
-
-
-@pytest.mark.parametrize(
-    "json_data",
-    [
-        [None],
-        ["no_json"],
-        [b"no_json"],
-    ]
-)
-@pytest.mark.asyncio
-async def test_for_bad_json_data(api: APIInterface, engine: AsyncEngine, json_data: Any):
-    method = Get(
-        request=Request(
-            app=api,
-            raw_json=json_data
-        ),
-    )
-
-    prepare_request_successful = await method.prepare_request()
-    assert prepare_request_successful is False
-
-    assert method.error == {"status": 422, "errors": ["body can not be parsed as json"]}, method.error
