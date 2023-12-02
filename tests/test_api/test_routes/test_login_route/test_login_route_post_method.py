@@ -25,7 +25,7 @@ async def test_method(api: APIInterface, engine: AsyncEngine, normal_users: list
     ).save(engine)
     method = Post(
         request=Request(
-            api=api,
+            app=api,
             raw_json={"login": normal_users[0].login, "password": normal_users[0].password}
         ),
     )
@@ -51,7 +51,7 @@ async def test_if_user_with_requested_login_does_not_exists(
 ):
     method = Post(
         request=Request(
-            api=api,
+            app=api,
             raw_json={"login": normal_users[0].login, "password": normal_users[0].password}
         ),
     )
@@ -76,7 +76,7 @@ async def test_for_wrong_password(
     ).save(engine)
     method = Post(
         request=Request(
-            api=api,
+            app=api,
             raw_json={"login": normal_users[0].login, "password": normal_users[1].password}
         ),
     )
@@ -94,7 +94,7 @@ async def test_for_wrong_password(
 async def test_for_empty_login_and_password(api: APIInterface, engine: AsyncEngine):
     method = Post(
         request=Request(
-            api=api
+            app=api
         ),
     )
 
@@ -116,7 +116,7 @@ async def test_for_empty_login_and_password(api: APIInterface, engine: AsyncEngi
 async def test_for_bad_json_data(api: APIInterface, engine: AsyncEngine, json_data: Any):
     method = Post(
         request=Request(
-            api=api,
+            app=api,
             raw_json=json_data
         ),
     )
@@ -138,7 +138,7 @@ async def test_cookies(api: APIInterface, engine: AsyncEngine, normal_users: lis
 
     method = Post(
         request=Request(
-            api=api,
+            app=api,
             raw_json={"login": normal_users[0].login, "password": normal_users[0].password}
         ),
     )

@@ -18,7 +18,7 @@ async def test_method(api: APIInterface, engine: AsyncEngine, normal_users: list
 
     method = Delete(
         request=Request(
-            api=api,
+            app=api,
             cookies={"session": "some_session"}
         ),
     )
@@ -47,7 +47,7 @@ async def test_method(api: APIInterface, engine: AsyncEngine, normal_users: list
 async def test_for_empty_cookies(api: APIInterface, engine: AsyncEngine, normal_users: list[UserDataClass]):
     method = Delete(
         request=Request(
-            api=api,
+            app=api,
         ),
     )
 

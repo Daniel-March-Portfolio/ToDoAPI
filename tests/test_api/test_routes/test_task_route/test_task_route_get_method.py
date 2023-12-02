@@ -38,7 +38,7 @@ async def test_method(
 
     method = Get(
         request=Request(
-            api=api,
+            app=api,
             raw_json={"uuid": task.uuid.hex},
             cookies={"session": session}
         ),
@@ -72,7 +72,7 @@ async def test_for_unauthorized_user(
 
     method = Get(
         request=Request(
-            api=api,
+            app=api,
             raw_json={"uuid": uuid4().hex}
         ),
     )
@@ -97,7 +97,7 @@ async def test_for_expired_session(
 
     method = Get(
         request=Request(
-            api=api,
+            app=api,
             raw_json={"uuid": uuid4().hex},
             cookies={"session": session}
         ),
@@ -125,7 +125,7 @@ async def test_for_deleted_user(
 
     method = Get(
         request=Request(
-            api=api,
+            app=api,
             raw_json={"uuid": uuid4().hex},
             cookies={"session": session}
         ),
@@ -143,7 +143,7 @@ async def test_for_empty_body(
 ):
     method = Get(
         request=Request(
-            api=api,
+            app=api,
             raw_json={}
         ),
     )
@@ -170,7 +170,7 @@ async def test_if_task_does_not_exists(
 
     method = Get(
         request=Request(
-            api=api,
+            app=api,
             raw_json={"uuid": uuid4().hex},
             cookies={"session": session}
         ),
@@ -209,7 +209,7 @@ async def test_if_try_to_get_another_user_task(
 
     method = Get(
         request=Request(
-            api=api,
+            app=api,
             raw_json={"uuid": task.uuid.hex},
             cookies={"session": session}
         ),
@@ -236,7 +236,7 @@ async def test_if_try_to_get_another_user_task(
 async def test_for_bad_json_data(api: APIInterface, engine: AsyncEngine, json_data: Any):
     method = Get(
         request=Request(
-            api=api,
+            app=api,
             raw_json=json_data
         ),
     )

@@ -40,7 +40,7 @@ async def test_method(
 
     method = Get(
         request=Request(
-            api=api,
+            app=api,
             cookies={"session": session}
         ),
     )
@@ -78,7 +78,7 @@ async def test_for_unauthorized_user(
 
     method = Get(
         request=Request(
-            api=api,
+            app=api,
         ),
     )
 
@@ -102,7 +102,7 @@ async def test_for_expired_session(
 
     method = Get(
         request=Request(
-            api=api,
+            app=api,
             cookies={"session": session}
         ),
     )
@@ -129,7 +129,7 @@ async def test_for_deleted_user(
 
     method = Get(
         request=Request(
-            api=api,
+            app=api,
             cookies={"session": session}
         ),
     )

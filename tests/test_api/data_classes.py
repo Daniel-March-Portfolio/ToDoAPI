@@ -7,7 +7,7 @@ from src.api import APIInterface
 
 @dataclass
 class RequestDataClass:
-    api: APIInterface
+    app: APIInterface
     raw_json: dict | Any = field(default_factory=dict)
     cookies: dict = field(default_factory=dict)
 

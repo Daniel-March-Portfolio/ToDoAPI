@@ -43,7 +43,7 @@ async def test_method(
 
     method = Delete(
         request=Request(
-            api=api,
+            app=api,
             cookies={"session": session}
         ),
     )
@@ -78,7 +78,7 @@ async def test_for_unauthorized_user(
 
     method = Delete(
         request=Request(
-            api=api,
+            app=api,
             raw_json={"uuid": uuid4().hex}
         ),
     )
@@ -103,7 +103,7 @@ async def test_for_expired_session(
 
     method = Delete(
         request=Request(
-            api=api,
+            app=api,
             raw_json={"uuid": uuid4().hex},
             cookies={"session": session}
         ),
@@ -131,7 +131,7 @@ async def test_for_deleted_user(
 
     method = Delete(
         request=Request(
-            api=api,
+            app=api,
             raw_json={"uuid": uuid4().hex},
             cookies={"session": session}
         ),

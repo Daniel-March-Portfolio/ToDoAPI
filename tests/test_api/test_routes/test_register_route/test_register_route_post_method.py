@@ -21,7 +21,7 @@ async def test_method(api: APIInterface, engine: AsyncEngine, normal_users: list
     assert n_users == 0
     method = Post(
         request=Request(
-            api=api,
+            app=api,
             raw_json={
                 "name": normal_users[0].name,
                 "login": normal_users[0].login,
@@ -63,7 +63,7 @@ async def test_with_short_name_login_and_password(
     assert n_users == 0
     method = Post(
         request=Request(
-            api=api,
+            app=api,
             raw_json={
                 "name": name,
                 "login": login,
@@ -95,7 +95,7 @@ async def test_if_login_already_in_use(api: APIInterface, engine: AsyncEngine, n
 
     method = Post(
         request=Request(
-            api=api,
+            app=api,
             raw_json={
                 "name": normal_users[0].name,
                 "login": normal_users[0].login,
@@ -127,7 +127,7 @@ async def test_if_login_already_in_use(api: APIInterface, engine: AsyncEngine, n
 async def test_for_bad_json_data(api: APIInterface, engine: AsyncEngine, json_data: Any):
     method = Post(
         request=Request(
-            api=api,
+            app=api,
             raw_json=json_data
         ),
     )

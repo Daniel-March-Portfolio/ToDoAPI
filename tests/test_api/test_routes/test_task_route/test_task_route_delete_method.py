@@ -40,7 +40,7 @@ async def test_method(
 
     method = Delete(
         request=Request(
-            api=api,
+            app=api,
             raw_json={"uuid": task.uuid.hex},
             cookies={"session": session}
         ),
@@ -76,7 +76,7 @@ async def test_for_unauthorized_user(
 
     method = Delete(
         request=Request(
-            api=api,
+            app=api,
             raw_json={"uuid": uuid4().hex}
         ),
     )
@@ -101,7 +101,7 @@ async def test_for_expired_session(
 
     method = Delete(
         request=Request(
-            api=api,
+            app=api,
             raw_json={"uuid": uuid4().hex},
             cookies={"session": session}
         ),
@@ -129,7 +129,7 @@ async def test_for_deleted_user(
 
     method = Delete(
         request=Request(
-            api=api,
+            app=api,
             raw_json={"uuid": uuid4().hex},
             cookies={"session": session}
         ),
@@ -147,7 +147,7 @@ async def test_for_empty_body(
 ):
     method = Delete(
         request=Request(
-            api=api,
+            app=api,
             raw_json={}
         ),
     )
@@ -174,7 +174,7 @@ async def test_if_task_does_not_exists(
 
     method = Delete(
         request=Request(
-            api=api,
+            app=api,
             raw_json={"uuid": uuid4().hex},
             cookies={"session": session}
         ),
@@ -213,7 +213,7 @@ async def test_if_try_to_delete_another_user_task(
 
     method = Delete(
         request=Request(
-            api=api,
+            app=api,
             raw_json={"uuid": task.uuid.hex},
             cookies={"session": session}
         ),
@@ -240,7 +240,7 @@ async def test_if_try_to_delete_another_user_task(
 async def test_for_bad_json_data(api: APIInterface, engine: AsyncEngine, json_data: Any):
     method = Delete(
         request=Request(
-            api=api,
+            app=api,
             raw_json=json_data
         ),
     )

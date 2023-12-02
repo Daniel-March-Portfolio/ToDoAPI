@@ -34,7 +34,7 @@ async def test_method(
 
     method = Post(
         request=Request(
-            api=api,
+            app=api,
             raw_json={"title": normal_tasks[0].title},
             cookies={"session": session}
         ),
@@ -73,7 +73,7 @@ async def test_for_unauthorized_user(
 
     method = Post(
         request=Request(
-            api=api,
+            app=api,
             raw_json={"title": normal_tasks[0].title}
         ),
     )
@@ -98,7 +98,7 @@ async def test_for_expired_session(
 
     method = Post(
         request=Request(
-            api=api,
+            app=api,
             raw_json={"title": normal_tasks[0].title},
             cookies={"session": session}
         ),
@@ -126,7 +126,7 @@ async def test_for_deleted_user(
 
     method = Post(
         request=Request(
-            api=api,
+            app=api,
             raw_json={"title": normal_tasks[0].title},
             cookies={"session": session}
         ),
@@ -144,7 +144,7 @@ async def test_for_short_title(
 ):
     method = Post(
         request=Request(
-            api=api,
+            app=api,
             raw_json={"title": ""}
         ),
     )
@@ -167,7 +167,7 @@ async def test_for_short_title(
 async def test_for_bad_json_data(api: APIInterface, engine: AsyncEngine, json_data: Any):
     method = Post(
         request=Request(
-            api=api,
+            app=api,
             raw_json=json_data
         ),
     )
