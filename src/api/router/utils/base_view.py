@@ -6,7 +6,7 @@ from src.api.interface import APIInterface
 class Request(AiohttpRequest):
 
     @property
-    def api(self) -> APIInterface:
+    def app(self) -> APIInterface:
         return super().app()
 
 

@@ -36,7 +36,7 @@ class Post(MethodInterface):
         self.__error = None
 
     async def prepare_request(self) -> bool:
-        database_engine = self.__request.api.database_engine
+        database_engine = self.__request.app.database_engine
         try:
             data = await self.__request.json()
         except:  # ToDo add certain type
@@ -50,7 +50,7 @@ class Post(MethodInterface):
 
         try:
             user = await get_user_by_session(
-                redis=self.__request.api.redis,
+                redis=self.__request.app.redis,
                 database_engine=database_engine,
                 session=self.__request.cookies.get("session")
             )
@@ -66,7 +66,7 @@ class Post(MethodInterface):
         return True
 
     async def handle(self) -> bool:
-        database_engine = self.__request.api.database_engine
+        database_engine = self.__request.app.database_engine
 
         task = Task(
             title=self.__data.title,

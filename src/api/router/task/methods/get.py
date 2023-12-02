@@ -38,7 +38,7 @@ class Get(MethodInterface):
         self.__error = None
 
     async def prepare_request(self) -> bool:
-        database_engine = self.__request.api.database_engine
+        database_engine = self.__request.app.database_engine
         try:
             data = await self.__request.json()
         except:  # ToDo add certain type
@@ -57,7 +57,7 @@ class Get(MethodInterface):
 
         try:
             user = await get_user_by_session(
-                redis=self.__request.api.redis,
+                redis=self.__request.app.redis,
                 database_engine=database_engine,
                 session=self.__request.cookies.get("session")
             )
@@ -79,7 +79,7 @@ class Get(MethodInterface):
         return True
 
     async def handle(self) -> bool:
-        database_engine = self.__request.api.database_engine
+        database_engine = self.__request.app.database_engine
         task = await Task.filter(create_condition(Task.uuid, self.__data.uuid), engine=database_engine, fetch_one=True)
         self.__result = Result(
             uuid=task.uuid,

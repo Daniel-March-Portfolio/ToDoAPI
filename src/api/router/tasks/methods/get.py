@@ -36,11 +36,11 @@ class Get(MethodInterface):
         self.__error = None
 
     async def prepare_request(self) -> bool:
-        database_engine = self.__request.api.database_engine
+        database_engine = self.__request.app.database_engine
 
         try:
             user = await get_user_by_session(
-                redis=self.__request.api.redis,
+                redis=self.__request.app.redis,
                 database_engine=database_engine,
                 session=self.__request.cookies.get("session")
             )
@@ -53,7 +53,7 @@ class Get(MethodInterface):
         return True
 
     async def handle(self) -> bool:
-        database_engine = self.__request.api.database_engine
+        database_engine = self.__request.app.database_engine
         tasks = await Task.filter(
             create_condition(Task.user_uuid, self.__data.user_uuid),
             order_by=[Task.created_at],

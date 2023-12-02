@@ -34,7 +34,7 @@ class Delete(MethodInterface):
         return True
 
     async def handle(self) -> bool:
-        await self.__request.api.redis.delete(self.__data.session)
+        await self.__request.app.redis.delete(self.__data.session)
         return True
 
     async def prepare_response(self) -> bool:

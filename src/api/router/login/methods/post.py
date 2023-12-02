@@ -62,7 +62,7 @@ class Post(MethodInterface):
         return True
 
     async def handle(self) -> bool:
-        database_engine = self.__request.api.database_engine
+        database_engine = self.__request.app.database_engine
 
         user = await User.filter(
             create_condition(User.login, self.__data.login, OPERATOR.EQUAL),
@@ -73,18 +73,18 @@ class Post(MethodInterface):
             self.__error = {"status": 403, "errors": ["bad login or password"]}
             return False
 
-        password_hash = hash_password(self.__data.password, self.__data.login, self.__request.api.env.api_salt)
+        password_hash = hash_password(self.__data.password, self.__data.login, self.__request.app.env.api_salt)
         if user.password_hash != password_hash:
             self.__error = {"status": 403, "errors": ["bad login or password"]}
             return False
 
         session = ".".join([user.uuid.hex, uuid.uuid4().hex])
-        await self.__request.api.redis.set(session, user.uuid.hex, ex=self.__request.api.env.api_session_ttl)
+        await self.__request.app.redis.set(session, user.uuid.hex, ex=self.__request.app.env.api_session_ttl)
         self.__result = Result(session=session)
         return True
 
     async def prepare_response(self) -> bool:
-        session_expires = datetime.utcnow() + timedelta(seconds=self.__request.api.env.api_session_ttl)
+        session_expires = datetime.utcnow() + timedelta(seconds=self.__request.app.env.api_session_ttl)
         session_expires = session_expires.strftime("%a, %d %b %Y %H:%M:00 UTC")
         self.__response = Response(
             status=200,

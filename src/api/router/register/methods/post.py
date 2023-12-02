@@ -59,9 +59,9 @@ class Post(MethodInterface):
         return True
 
     async def handle(self) -> bool:
-        database_engine = self.__request.api.database_engine
+        database_engine = self.__request.app.database_engine
 
-        password_hash = hash_password(self.__data.password, self.__data.login, self.__request.api.env.api_salt)
+        password_hash = hash_password(self.__data.password, self.__data.login, self.__request.app.env.api_salt)
         try:
             await User(
                 name=self.__data.name,
