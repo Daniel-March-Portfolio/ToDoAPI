@@ -7,7 +7,7 @@ paths:
     get:
       summary: Return a certain task.
       parameters:
-        - name: UUID
+        - name: uuid
           in: query
           required: true
           schema:
