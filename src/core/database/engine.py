@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import create_async_engine, AsyncEngine
 from src.core.models import BaseModel
 
 
-def create_engine(url: str = None, echo: bool = False) -> AsyncEngine:
+def create_engine(url: str, echo: bool = False) -> AsyncEngine:
     engine = create_async_engine(url, echo=echo)
     return engine
 
