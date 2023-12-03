@@ -25,8 +25,4 @@ class EnvInterface(ABC):
 
     @property
     @abstractmethod
-    def redis_host(self) -> str: ...
-
-    @property
-    @abstractmethod
-    def redis_port(self) -> int: ...
+    def redis_url(self) -> str: ...

@@ -14,12 +14,8 @@ class FakeEnv(EnvInterface):
         return EnvVarEnumClass.DATABASE_URL.value
 
     @property
-    def redis_host(self) -> str:
-        return EnvVarEnumClass.REDIS_HOST.value
-
-    @property
-    def redis_port(self) -> int:
-        return EnvVarEnumClass.REDIS_PORT.value
+    def redis_url(self) -> str:
+        return EnvVarEnumClass.REDIS_URL.value
 
     @property
     def api_host(self) -> str:

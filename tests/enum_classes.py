@@ -7,5 +7,4 @@ class EnvVarEnumClass(Enum):
     API_PORT: int = 8000
     API_SESSION_TTL: int = 100
     API_SALT: str = "some_salt"
-    REDIS_HOST: str = "127.0.0.11"
-    REDIS_PORT: str = 6379
+    REDIS_URL: str = "redis://127.0.0.1:6379"
