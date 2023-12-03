@@ -33,13 +33,13 @@ def test_if_env_var_does_not_exists():
     with pytest.raises(CoreException) as exception_info:
         Env()
     expected_errors = {
-        "DATABASE_URL not found in environ variables",
-        "API_HOST not found in environ variables",
-        "API_PORT not found in environ variables",
-        "API_SESSION_TTL not found in environ variables",
-        "API_SALT not found in environ variables",
-        "REDIS_HOST not found in environ variables",
-        "REDIS_PORT not found in environ variables"
+        "DATABASE_URL not found in environment variables",
+        "API_HOST not found in environment variables",
+        "API_PORT not found in environment variables",
+        "API_SESSION_TTL not found in environment variables",
+        "API_SALT not found in environment variables",
+        "REDIS_HOST not found in environment variables",
+        "REDIS_PORT not found in environment variables"
     }
     assert set(exception_info.value.errors) == expected_errors
 

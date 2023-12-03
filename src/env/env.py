@@ -24,29 +24,29 @@ class Env(EnvInterface):
 
         errors: list[str] = []
         if database_url is None:
-            errors.append("DATABASE_URL not found in environ variables")
+            errors.append("DATABASE_URL not found in environment variables")
 
         if api_host is None:
-            errors.append("API_HOST not found in environ variables")
+            errors.append("API_HOST not found in environment variables")
 
         if api_port is None:
-            errors.append("API_PORT not found in environ variables")
+            errors.append("API_PORT not found in environment variables")
         elif not api_port.isdecimal():
             errors.append("API_PORT is not an integer")
 
         if api_session_ttl is None:
-            errors.append("API_SESSION_TTL not found in environ variables")
+            errors.append("API_SESSION_TTL not found in environment variables")
         elif not api_session_ttl.isdecimal():
             errors.append("API_SESSION_TTL is not an integer")
 
         if api_salt is None:
-            errors.append("API_SALT not found in environ variables")
+            errors.append("API_SALT not found in environment variables")
 
         if redis_host is None:
-            errors.append("REDIS_HOST not found in environ variables")
+            errors.append("REDIS_HOST not found in environment variables")
 
         if redis_port is None:
-            errors.append("REDIS_PORT not found in environ variables")
+            errors.append("REDIS_PORT not found in environment variables")
         elif not redis_port.isdecimal():
             errors.append("REDIS_PORT is not an integer")
 
