@@ -1,0 +1,49 @@
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql+asyncpg://postgres:some_password@172.16.238.12:5432/postgres
+      API_HOST: 0.0.0.0
+      API_PORT: 8000
+      API_SESSION_TTL: 604800
+      API_SALT: some_salt
+      REDIS_URL: redis://172.16.238.11:6379
+    depends_on:
+      postgers:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    links:
+      - "redis:redis"
+      - "postgers:postgers"
+    networks:
+      - network
+
+  redis:
+    image: "redis:alpine"
+    networks:
+      network:
+        ipv4_address: "172.16.238.11"
+
+  postgers:
+    image: "postgres:15"
+    environment:
+      POSTGRES_PASSWORD: some_password
+      POSTGRES_USER: postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready  -U postgres"]
+      interval: 5s
+      retries: 5
+    networks:
+      network:
+        ipv4_address: "172.16.238.12"
+
+
+networks:
+  network:
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.16.238.0/24"
