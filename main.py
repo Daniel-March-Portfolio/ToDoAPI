@@ -11,7 +11,7 @@ logging.basicConfig(level=logging.DEBUG)
 
 async def main():
     environment = Env()
-    redis = Redis(url=f"redis://{environment.redis_host}:{environment.redis_port}")
+    redis = Redis(url=environment.redis_url)
     engine = create_engine(environment.database_url)
     await create_all_tables(engine)
 
