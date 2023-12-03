@@ -16,3 +16,6 @@ class APIException(CustomBaseException):
     @property
     def errors(self) -> list[str]:
         return self.__errors
+
+    def __str__(self):
+        return f"{self.status}: {self.__errors}"

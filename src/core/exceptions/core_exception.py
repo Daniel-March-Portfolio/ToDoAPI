@@ -10,3 +10,6 @@ class CoreException(CustomBaseException):
     @property
     def errors(self) -> list[str]:
         return self.__errors
+
+    def __str__(self):
+        return str(self.__errors)
