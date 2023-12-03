@@ -1,4 +1,4 @@
-aiohttp==3.8.5
+aiohttp==3.9.1
 SQLAlchemy==2.0.20
 asyncpg==0.29.0
 redis==5.0.1
