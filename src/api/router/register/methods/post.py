@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from json import JSONDecodeError
 
 from aiohttp.web_response import Response
 from sqlalchemy.exc import IntegrityError
@@ -33,7 +34,7 @@ class Post(MethodInterface):
         prepare_errors: list[str] = []
         try:
             data = await self.__request.json()
-        except:  # ToDo add certain type
+        except (TypeError, JSONDecodeError):
             self.__error = {"status": 422, "errors": ["body can not be parsed as json"]}
             return False
 

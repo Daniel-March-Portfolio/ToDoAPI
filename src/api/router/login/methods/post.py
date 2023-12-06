@@ -1,6 +1,7 @@
 import uuid
 from dataclasses import dataclass
 from datetime import datetime, timedelta
+from json import JSONDecodeError
 
 from aiohttp.web_response import Response
 
@@ -40,7 +41,7 @@ class Post(MethodInterface):
         prepare_errors: list[str] = []
         try:
             data = await self.__request.json()
-        except:  # ToDo add certain type
+        except (TypeError, JSONDecodeError):
             self.__error = {"status": 422, "errors": ["body can not be parsed as json"]}
             return False
 

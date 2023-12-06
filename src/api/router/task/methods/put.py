@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from json import JSONDecodeError
 from uuid import UUID
 
 from aiohttp.web_response import Response
@@ -35,7 +36,7 @@ class Put(MethodInterface):
         database_engine = self.__request.app.database_engine
         try:
             data = await self.__request.json()
-        except:  # ToDo add certain type
+        except (TypeError, JSONDecodeError):
             self.__error = {"status": 422, "errors": ["body can not be parsed as json"]}
             return False
 
