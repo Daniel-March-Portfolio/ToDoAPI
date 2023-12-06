@@ -97,7 +97,8 @@ async def test_for_deleted_user(
     user = await create_user_and_session(
         login=normal_users[0].login,
         name=normal_users[0].name,
-        password_hash=normal_users[0].password_hash, session=session,
+        password_hash=normal_users[0].password_hash,
+        session=session,
         engine=engine,
         redis=api.redis
     )
