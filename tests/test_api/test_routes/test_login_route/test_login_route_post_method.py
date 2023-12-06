@@ -101,7 +101,24 @@ async def test_for_empty_login_and_password(api: APIInterface, engine: AsyncEngi
     prepare_request_successful = await method.prepare_request()
     assert prepare_request_successful is False
 
-    assert method.error == {"status": 400, "errors": ["empty login", "empty password"]}, method.error
+    expected = {"status": 400, "errors": ["login is not a string", "password is not a string"]}
+    assert method.error == expected, method.error
+
+
+@pytest.mark.asyncio
+async def test_for_short_login_and_password(api: APIInterface, engine: AsyncEngine):
+    method = Post(
+        request=Request(
+            app=api,
+            raw_json={"login": "", "password": ""}
+        ),
+    )
+
+    prepare_request_successful = await method.prepare_request()
+    assert prepare_request_successful is False
+
+    expected = {"status": 400, "errors": ["login is too short", "password is too short"]}
+    assert method.error == expected, method.error
 
 
 @pytest.mark.parametrize(

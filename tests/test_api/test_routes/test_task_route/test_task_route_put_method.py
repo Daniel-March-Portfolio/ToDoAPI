@@ -131,3 +131,34 @@ async def test_for_bad_json_data(
     assert prepare_request_successful is False
 
     assert method.error == {"status": 422, "errors": ["body can not be parsed as json"]}, method.error
+
+
+@pytest.mark.parametrize(
+    "new_title,uuid",
+    [[1, 1], [True, True], [[], []], [None, None]]
+)
+@pytest.mark.asyncio
+async def test_for_wrong_fields_type(
+        api: APIInterface, engine: AsyncEngine, normal_users: list[UserDataClass], new_title: Any, uuid: Any
+):
+    session = "some_session"
+    await create_user_and_session(
+        login=normal_users[0].login,
+        name=normal_users[0].name,
+        password_hash=normal_users[0].password_hash,
+        session=session,
+        engine=engine,
+        redis=api.redis
+    )
+    method = Put(
+        request=Request(
+            app=api,
+            raw_json={"new_title": new_title, "uuid": uuid},
+            cookies={"session": session}
+        ),
+    )
+
+    prepare_request_successful = await method.prepare_request()
+    assert prepare_request_successful is False
+
+    assert method.error == {"status": 422, "errors": ["new_title is not a string"]}, method.error

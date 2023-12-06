@@ -1,4 +1,5 @@
 import json
+from typing import Any
 from uuid import uuid4
 
 import pytest
@@ -153,3 +154,34 @@ async def test_if_try_to_get_another_user_task(
 
     n_tasks = await Task.get_count_of_rows(engine)
     assert n_tasks == 1
+
+
+@pytest.mark.parametrize(
+    "uuid",
+    [1, True, []]
+)
+@pytest.mark.asyncio
+async def test_for_wrong_fields_type(
+        api: APIInterface, engine: AsyncEngine, normal_users: list[UserDataClass], uuid: Any
+):
+    session = "some_session"
+    await create_user_and_session(
+        login=normal_users[0].login,
+        name=normal_users[0].name,
+        password_hash=normal_users[0].password_hash,
+        session=session,
+        engine=engine,
+        redis=api.redis
+    )
+    method = Get(
+        request=Request(
+            app=api,
+            query={"uuid": uuid},
+            cookies={"session": session}
+        ),
+    )
+
+    prepare_request_successful = await method.prepare_request()
+    assert prepare_request_successful is False
+
+    assert method.error == {"status": 422, "errors": ["uuid is not a string"]}, method.error

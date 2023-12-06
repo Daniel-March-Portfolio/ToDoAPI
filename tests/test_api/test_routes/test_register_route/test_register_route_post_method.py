@@ -50,12 +50,14 @@ async def test_method(api: APIInterface, engine: AsyncEngine, normal_users: list
 @pytest.mark.parametrize(
     "name,login,password",
     [
-        ["", "", ""],
+        [1, 1, 1],
+        [True, True, True],
+        [[], [], []],
         [None, None, None]
     ]
 )
 @pytest.mark.asyncio
-async def test_with_short_name_login_and_password(
+async def test_wrong_fields_type(
         api: APIInterface, engine: AsyncEngine, normal_users: list[UserDataClass],
         name: str | None, login: str | None, password: str | None
 ):
@@ -75,7 +77,7 @@ async def test_with_short_name_login_and_password(
     prepare_request_successful = await method.prepare_request()
     assert prepare_request_successful is False, method.error
 
-    expected = {"status": 400, "errors": ["name is too short", "login is too short", "password is too short"]}
+    expected = {"status": 400, "errors": ["name is not a string", "login is not a string", "password is not a string"]}
     assert method.error == expected, method.error
 
     n_users = await User.get_count_of_rows(engine)
