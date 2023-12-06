@@ -54,7 +54,7 @@ class Delete(MethodInterface):
             return False
         try:
             task_uuid = UUID(uuid_string)
-        except:
+        except (AttributeError, ValueError, TypeError):
             self.__error = {"status": 400, "errors": ["bad uuid"]}
             return False
 

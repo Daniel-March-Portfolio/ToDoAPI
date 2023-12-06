@@ -63,7 +63,7 @@ class Put(MethodInterface):
 
         try:
             task_uuid = UUID(task_uuid_str)
-        except:
+        except (AttributeError, ValueError, TypeError):
             self.__error = {"status": 400, "errors": ["bad uuid"]}
             return False
 
