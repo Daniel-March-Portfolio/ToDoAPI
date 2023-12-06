@@ -34,6 +34,17 @@ class Put(MethodInterface):
 
     async def prepare_request(self) -> bool:
         database_engine = self.__request.app.database_engine
+
+        try:
+            user = await get_user_by_session(
+                redis=self.__request.app.redis,
+                database_engine=database_engine,
+                session=self.__request.cookies.get("session")
+            )
+        except APIException as exception:
+            self.__error = {"status": exception.status, "errors": exception.errors}
+            return False
+
         try:
             data = await self.__request.json()
         except (TypeError, JSONDecodeError):
@@ -54,16 +65,6 @@ class Put(MethodInterface):
             task_uuid = UUID(task_uuid_str)
         except:
             self.__error = {"status": 400, "errors": ["bad uuid"]}
-            return False
-
-        try:
-            user = await get_user_by_session(
-                redis=self.__request.app.redis,
-                database_engine=database_engine,
-                session=self.__request.cookies.get("session")
-            )
-        except APIException as exception:
-            self.__error = {"status": exception.status, "errors": exception.errors}
             return False
 
         task = await Task.filter(

@@ -40,6 +40,16 @@ class Get(MethodInterface):
     async def prepare_request(self) -> bool:
         database_engine = self.__request.app.database_engine
 
+        try:
+            user = await get_user_by_session(
+                redis=self.__request.app.redis,
+                database_engine=database_engine,
+                session=self.__request.cookies.get("session")
+            )
+        except APIException as exception:
+            self.__error = {"status": exception.status, "errors": exception.errors}
+            return False
+
         data = self.__request.query
 
         uuid_string = data.get("uuid")
@@ -50,16 +60,6 @@ class Get(MethodInterface):
             task_uuid = UUID(uuid_string)
         except:
             self.__error = {"status": 400, "errors": ["bad uuid"]}
-            return False
-
-        try:
-            user = await get_user_by_session(
-                redis=self.__request.app.redis,
-                database_engine=database_engine,
-                session=self.__request.cookies.get("session")
-            )
-        except APIException as exception:
-            self.__error = {"status": exception.status, "errors": exception.errors}
             return False
 
         task = await Task.filter(create_condition(Task.uuid, task_uuid), engine=database_engine, fetch_one=True)

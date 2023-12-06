@@ -38,16 +38,6 @@ class Post(MethodInterface):
 
     async def prepare_request(self) -> bool:
         database_engine = self.__request.app.database_engine
-        try:
-            data = await self.__request.json()
-        except (TypeError, JSONDecodeError):
-            self.__error = {"status": 422, "errors": ["body can not be parsed as json"]}
-            return False
-
-        title = data.get("title")
-        if title is None or len(title) < 5:
-            self.__error = {"status": 400, "errors": ["title is too short"]}
-            return False
 
         try:
             user = await get_user_by_session(
@@ -57,6 +47,17 @@ class Post(MethodInterface):
             )
         except APIException as exception:
             self.__error = {"status": exception.status, "errors": exception.errors}
+            return False
+
+        try:
+            data = await self.__request.json()
+        except (TypeError, JSONDecodeError):
+            self.__error = {"status": 422, "errors": ["body can not be parsed as json"]}
+            return False
+
+        title = data.get("title")
+        if title is None or len(title) < 5:
+            self.__error = {"status": 400, "errors": ["title is too short"]}
             return False
 
         self.__data = Data(
