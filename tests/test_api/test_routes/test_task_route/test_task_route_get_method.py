@@ -10,6 +10,7 @@ from src.api.router.task.methods import Get
 from src.core.models import User, Task
 from tests.data_classes import UserDataClass, TaskDataClass
 from tests.test_api.data_classes import RequestDataClass
+from tests.utils.create_user_and_session import create_user_and_session
 
 
 class Request(RequestDataClass):
@@ -20,20 +21,20 @@ class Request(RequestDataClass):
 async def test_method(
         api: APIInterface, engine: AsyncEngine, normal_users: list[UserDataClass], normal_tasks: list[TaskDataClass]
 ):
-    user = User(
+    session = "some_session"
+    user = await create_user_and_session(
         login=normal_users[0].login,
         name=normal_users[0].name,
-        password_hash=normal_users[0].password_hash
+        password_hash=normal_users[0].password_hash,
+        session=session,
+        engine=engine,
+        redis=api.redis
     )
-    await user.save(engine)
     task = Task(
         title=normal_tasks[0].title,
         user_uuid=user.uuid
     )
     await task.save(engine)
-
-    session = "some_session"
-    await api.redis.set(session, user.uuid.hex)
 
     method = Get(
         request=Request(
@@ -62,9 +63,19 @@ async def test_method(
 async def test_for_empty_body(
         api: APIInterface, engine: AsyncEngine, normal_users: list[UserDataClass], normal_tasks: list[TaskDataClass]
 ):
+    session = "some_session"
+    await create_user_and_session(
+        login=normal_users[0].login,
+        name=normal_users[0].name,
+        password_hash=normal_users[0].password_hash,
+        session=session,
+        engine=engine,
+        redis=api.redis
+    )
     method = Get(
         request=Request(
-            app=api
+            app=api,
+            cookies={"session": session}
         ),
     )
 
@@ -78,15 +89,15 @@ async def test_for_empty_body(
 async def test_if_task_does_not_exists(
         api: APIInterface, engine: AsyncEngine, normal_users: list[UserDataClass], normal_tasks: list[TaskDataClass]
 ):
-    user = User(
+    session = "some_session"
+    await create_user_and_session(
         login=normal_users[0].login,
         name=normal_users[0].name,
-        password_hash=normal_users[0].password_hash
+        password_hash=normal_users[0].password_hash,
+        session=session,
+        engine=engine,
+        redis=api.redis
     )
-    await user.save(engine)
-
-    session = "some_session"
-    await api.redis.set(session, user.uuid.hex)
 
     method = Get(
         request=Request(
@@ -106,26 +117,26 @@ async def test_if_task_does_not_exists(
 async def test_if_try_to_get_another_user_task(
         api: APIInterface, engine: AsyncEngine, normal_users: list[UserDataClass], normal_tasks: list[TaskDataClass]
 ):
-    user_1 = User(
+    session = "some_session"
+    await create_user_and_session(
         login=normal_users[0].login,
         name=normal_users[0].name,
-        password_hash=normal_users[0].password_hash
+        password_hash=normal_users[0].password_hash,
+        session=session,
+        engine=engine,
+        redis=api.redis
     )
-    await user_1.save(engine)
-    user_2 = User(
+    another_user = User(
         login=normal_users[1].login,
         name=normal_users[1].name,
         password_hash=normal_users[1].password_hash
     )
-    await user_2.save(engine)
+    await another_user.save(engine)
     task = Task(
         title=normal_tasks[0].title,
-        user_uuid=user_2.uuid
+        user_uuid=another_user.uuid
     )
     await task.save(engine)
-
-    session = "some_session"
-    await api.redis.set(session, user_1.uuid.hex)
 
     method = Get(
         request=Request(

@@ -4,12 +4,13 @@ import pytest
 from aiohttp.web_response import Response
 from sqlalchemy.ext.asyncio import AsyncEngine
 
-from src.core.utils.create_condition import create_condition
 from src.api import APIInterface
 from src.api.router.tasks.methods import Get
-from src.core.models import User, Task
+from src.core.models import Task
+from src.core.utils.create_condition import create_condition
 from tests.data_classes import UserDataClass, TaskDataClass
 from tests.test_api.data_classes import RequestDataClass
+from tests.utils.create_user_and_session import create_user_and_session
 
 
 class Request(RequestDataClass):
@@ -20,12 +21,15 @@ class Request(RequestDataClass):
 async def test_method(
         api: APIInterface, engine: AsyncEngine, normal_users: list[UserDataClass], normal_tasks: list[TaskDataClass]
 ):
-    user = User(
+    session = "some_session"
+    user = await create_user_and_session(
         login=normal_users[0].login,
         name=normal_users[0].name,
-        password_hash=normal_users[0].password_hash
+        password_hash=normal_users[0].password_hash,
+        session=session,
+        engine=engine,
+        redis=api.redis
     )
-    await user.save(engine)
     await Task(
         title=normal_tasks[0].title,
         user_uuid=user.uuid
@@ -34,9 +38,6 @@ async def test_method(
         title=normal_tasks[1].title,
         user_uuid=user.uuid
     ).save(engine)
-
-    session = "some_session"
-    await api.redis.set(session, user.uuid.hex)
 
     method = Get(
         request=Request(
