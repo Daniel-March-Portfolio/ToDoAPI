@@ -4,12 +4,12 @@ from uuid import UUID
 
 from aiohttp.web_response import Response
 
-from src.core.exceptions import APIException
-from src.core.utils.create_condition import create_condition
-from src.core.utils.get_user_by_session import get_user_by_session
 from src.api.router.utils.base_view import Request
 from src.api.router.utils.method_interface import MethodInterface
+from src.core.exceptions import APIException
 from src.core.models import Task
+from src.core.utils.create_condition import create_condition
+from src.core.utils.get_user_by_session import get_user_by_session
 
 
 @dataclass
@@ -52,6 +52,9 @@ class Put(MethodInterface):
             return False
 
         title = data.get("new_title")
+        if not isinstance(title, str):
+            self.__error = {"status": 422, "errors": ["new_title is not a string"]}
+            return False
         if title is None or len(title) < 5:
             self.__error = {"status": 400, "errors": ["new_title is too short"]}
             return False
@@ -59,6 +62,9 @@ class Put(MethodInterface):
         task_uuid_str = data.get("uuid")
         if task_uuid_str is None:
             self.__error = {"status": 400, "errors": ["uuid not found in request"]}
+            return False
+        if not isinstance(task_uuid_str, str):
+            self.__error = {"status": 422, "errors": ["uuid is not a string"]}
             return False
 
         try:

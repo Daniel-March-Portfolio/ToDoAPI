@@ -4,12 +4,12 @@ from uuid import UUID
 
 from aiohttp.web_response import Response
 
-from src.core.exceptions import APIException
-from src.core.utils.get_user_by_session import get_user_by_session
 from src.api.router.utils.base_view import Request
 from src.api.router.utils.method_interface import MethodInterface
+from src.core.exceptions import APIException
 from src.core.models import Task
 from src.core.utils.create_condition import create_condition
+from src.core.utils.get_user_by_session import get_user_by_session
 
 
 @dataclass
@@ -52,6 +52,10 @@ class Delete(MethodInterface):
         if uuid_string is None:
             self.__error = {"status": 400, "errors": ["uuid not found in request"]}
             return False
+        if not isinstance(uuid_string, str):
+            self.__error = {"status": 422, "errors": ["uuid is not a string"]}
+            return False
+
         try:
             task_uuid = UUID(uuid_string)
         except (AttributeError, ValueError, TypeError):

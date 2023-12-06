@@ -4,11 +4,11 @@ from uuid import UUID
 
 from aiohttp.web_response import Response, json_response
 
-from src.core.exceptions import APIException
-from src.core.utils.get_user_by_session import get_user_by_session
 from src.api.router.utils.base_view import Request
 from src.api.router.utils.method_interface import MethodInterface
+from src.core.exceptions import APIException
 from src.core.models import Task
+from src.core.utils.get_user_by_session import get_user_by_session
 
 
 @dataclass
@@ -56,6 +56,9 @@ class Post(MethodInterface):
             return False
 
         title = data.get("title")
+        if not isinstance(title, str):
+            self.__error = {"status": 422, "errors": ["title is not a string"]}
+            return False
         if title is None or len(title) < 5:
             self.__error = {"status": 400, "errors": ["title is too short"]}
             return False

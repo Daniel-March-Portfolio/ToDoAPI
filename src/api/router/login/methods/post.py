@@ -47,10 +47,17 @@ class Post(MethodInterface):
 
         login = data.get("login")
         password = data.get("password")
-        if login is None or len(login) == 0:
-            prepare_errors.append("empty login")
-        if password is None or len(password) == 0:
-            prepare_errors.append("empty password")
+
+        if not isinstance(login, str):
+            prepare_errors.append("login is not a string")
+        elif len(login) == 0:
+            prepare_errors.append("login is too short")
+
+        if not isinstance(password, str):
+            prepare_errors.append("password is not a string")
+        elif len(password) == 0:
+            prepare_errors.append("password is too short")
+
         if prepare_errors:
             self.__error = {"status": 400, "errors": prepare_errors}
             return False

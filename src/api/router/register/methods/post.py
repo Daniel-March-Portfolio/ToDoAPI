@@ -41,12 +41,22 @@ class Post(MethodInterface):
         name = data.get("name")
         login = data.get("login")
         password = data.get("password")
-        if name is None or len(name) < 2:
+
+        if not isinstance(name, str):
+            prepare_errors.append("name is not a string")
+        elif len(name) < 2:
             prepare_errors.append("name is too short")
-        if login is None or len(login) < 5:
+
+        if not isinstance(login, str):
+            prepare_errors.append("login is not a string")
+        elif len(login) < 5:
             prepare_errors.append("login is too short")
-        if password is None or len(password) < 5:
+
+        if not isinstance(password, str):
+            prepare_errors.append("password is not a string")
+        elif len(password) < 5:
             prepare_errors.append("password is too short")
+
         if prepare_errors:
             self.__error = {"status": 400, "errors": prepare_errors}
             return False
