@@ -26,8 +26,9 @@ def engine() -> AsyncEngine:
 
 
 @fixture(scope="function")
-def redis() -> RedisInterface:
+async def redis() -> RedisInterface:
     redis = FakeRedis()
+    await redis.flushdb()
     return redis
 
 

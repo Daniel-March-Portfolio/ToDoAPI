@@ -35,7 +35,7 @@ class FakeEnv(EnvInterface):
 
 
 @fixture(scope="function")
-def api(engine: AsyncEngine, redis: RedisInterface) -> APIInterface:
+async def api(engine: AsyncEngine, redis: RedisInterface) -> APIInterface:
     env = FakeEnv()
     api = API(
         env=env,
